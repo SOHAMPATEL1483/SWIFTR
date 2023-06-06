@@ -7,7 +7,15 @@ import { ZodError, z } from "zod";
 
 const User = z.object({
     username: z.string().min(8, "username must be atleast 8 character long"),
-    password: z.string().min(8, "password must be atleast 8 character long").regex(new RegExp(`^(?=.*[A-Z])(?=.*\d).*$`), "password must contain at least 1 uppercase and 1 digit"),
+    password: z.string()
+        .regex(new RegExp(".*[A-Z].*"), "atleast one uppercase character required")
+        .regex(new RegExp(".*[a-z].*"), "atleast One lowercase character required")
+        .regex(new RegExp(".*\\d.*"), "atleast One number required")
+        .regex(
+            new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),
+            "atleast One special character required"
+        )
+        .min(8, "Must be at least 8 characters in length"),
 });
 
 
