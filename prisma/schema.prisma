@@ -1,135 +1,118 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model AuthUser {
-    id           String        @id @unique
-    auth_session AuthSession[]
-    auth_key     AuthKey[]
-    // here you can add custom fields for your user
-    // e.g. name, email, username, roles, etc.
-    name         String
-    role         Role
-    phone        String
-    address      String
-    city         String
-    state        String
-    createdAt    DateTime      @default(now())
-    updatedAt    DateTime      @updatedAt
+  id           String        @id @unique
+  name         String
+  role         Role
+  phone        String
+  address      String
+  city         String
+  state        String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  CartItem     CartItem[]
+  Comments     Comments[]
+  Order        Order[]
+  Service      Service[]
+  auth_key     AuthKey[]
+  auth_session AuthSession[]
 
-    Service  Service[]
-    CartItem CartItem[]
-    Order    Order[]
-    Comments Comments[]
-
-    @@map("auth_user")
+  @@map("auth_user")
 }
 
 model AuthSession {
-    id             String   @id @unique
-    user_id        String
-    active_expires BigInt
-    idle_expires   BigInt
-    auth_user      AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  id             String   @id @unique
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  auth_user      AuthUser @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-    @@index([user_id])
-    @@map("auth_session")
+  @@index([user_id])
+  @@map("auth_session")
 }
 
 model AuthKey {
-    id              String   @id @unique
-    hashed_password String?
-    user_id         String
-    primary_key     Boolean
-    expires         BigInt?
-    auth_user       AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  id              String   @id @unique
+  hashed_password String?
+  user_id         String
+  primary_key     Boolean
+  expires         BigInt?
+  auth_user       AuthUser @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-    @@index([user_id])
-    @@map("auth_key")
+  @@index([user_id])
+  @@map("auth_key")
 }
 
 model Service {
-    id          String   @id @default(uuid())
-    name        String
-    description String?
-    category    String   @default("other")
-    image       String   @default("/uploads/example.jpg")
-    price       Int
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-
-    Seller   AuthUser @relation(fields: [Sellerid], references: [id], onDelete: Cascade)
-    Sellerid String
-
-    CartItem  CartItem[]
-    OrderItem OrderItem[]
-    Comments  Comments[]
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  category    String      @default("other")
+  image       String      @default("/uploads/example.jpg")
+  price       Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  Sellerid    String
+  CartItem    CartItem[]
+  Comments    Comments[]
+  OrderItem   OrderItem[]
+  Seller      AuthUser    @relation(fields: [Sellerid], references: [id], onDelete: Cascade)
 }
 
 model CartItem {
-    quantity  Int      @default(0)
-    //user
-    User      AuthUser @relation(fields: [UserId], references: [id], onDelete: Cascade)
-    UserId    String
-    //service
-    Service   Service  @relation(fields: [ServiceId], references: [id], onDelete: Cascade)
-    ServiceId String
+  quantity  Int      @default(0)
+  UserId    String
+  ServiceId String
+  Service   Service  @relation(fields: [ServiceId], references: [id], onDelete: Cascade)
+  User      AuthUser @relation(fields: [UserId], references: [id], onDelete: Cascade)
 
-    @@id([UserId, ServiceId])
-    @@index([UserId, ServiceId])
+  @@id([UserId, ServiceId])
+  @@index([UserId, ServiceId])
 }
 
 model OrderItem {
-    id       String @id @default(uuid())
-    quantity Int
-
-    Service   Service @relation(fields: [ServiceId], references: [id], onDelete: Cascade)
-    ServiceId String
-
-    Order   Order  @relation(fields: [OrderId], references: [id], onDelete: Cascade)
-    OrderId String
+  id        String  @id @default(uuid())
+  quantity  Int
+  ServiceId String
+  OrderId   String
+  Order     Order   @relation(fields: [OrderId], references: [id], onDelete: Cascade)
+  Service   Service @relation(fields: [ServiceId], references: [id], onDelete: Cascade)
 }
 
 model Order {
-    id             String   @id @default(uuid())
-    subtotal       Int
-    convinienceFee Int
-    total          Int
-    deliveryDate   DateTime
-    createdAt      DateTime @default(now())
-    updatedAt      DateTime @updatedAt
-
-    //user
-    User   AuthUser @relation(fields: [UserId], references: [id], onDelete: Cascade)
-    UserId String
-
-    OrderItem OrderItem[]
+  id             String      @id @default(uuid())
+  subtotal       Int
+  convinienceFee Int
+  total          Int
+  deliveryDate   DateTime
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  UserId         String
+  User           AuthUser    @relation(fields: [UserId], references: [id], onDelete: Cascade)
+  OrderItem      OrderItem[]
 }
 
 model Comments {
-    id        String   @id @default(uuid())
-    body      String
-    rating    Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    //
-    User      AuthUser @relation(fields: [UserId], references: [id], onDelete: Cascade)
-    UserId    String
-
-    Service   Service @relation(fields: [ServiceId], references: [id], onDelete: Cascade)
-    ServiceId String
+  id        String   @id @default(uuid())
+  body      String
+  rating    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  UserId    String
+  ServiceId String
+  Service   Service  @relation(fields: [ServiceId], references: [id], onDelete: Cascade)
+  User      AuthUser @relation(fields: [UserId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
-    ADMIN
-    CUSTOMER
-    PROVIDER
+  ADMIN
+  CUSTOMER
+  PROVIDER
 }
