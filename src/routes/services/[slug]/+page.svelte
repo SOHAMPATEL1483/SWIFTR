@@ -14,8 +14,8 @@
 </script>
 
 <Preloader>
-	<div class="flex gap-28 mx-auto w-fit my-20 font-poppins">
-		<div class="my-auto w-1/2 max-w-lg">
+	<div class="flex gap-28 mx-auto w-fit my-20 font-poppins px-7 lg:px-0">
+		<div class="my-auto hidden lg:block lg:w-1/2">
 			<img src={data.service?.image} alt="" class="object-contain w-full rounded-md" />
 		</div>
 		<div class="my-auto max-w-3xl">
@@ -54,7 +54,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="font-poppins max-w-6xl mx-auto">
+	<div class="font-poppins max-w-6xl mx-auto  px-7 lg:px-0">
 		<form action="?/PostReview" method="post" use:enhance>
 			<p class="unstyled text-3xl font-bold my-5">Reviews</p>
 			<textarea class="textarea p-3" rows="4" placeholder="Write your review here" name="body" />
@@ -90,5 +90,5 @@
 		{/each}
 	</div>
 
-	<pre> {JSON.stringify(data, null, 4)}</pre>
+	<!-- <pre> {JSON.stringify(data, null, 4)}</pre> -->
 </Preloader>

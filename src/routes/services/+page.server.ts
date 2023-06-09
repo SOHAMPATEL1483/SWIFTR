@@ -11,6 +11,7 @@ export const load: PageServerLoad = async ({ cookies, fetch, url }) =>
             where: {
                 name: {
                     startsWith: query,
+                    mode: 'insensitive',
                 }
             },
             include: {

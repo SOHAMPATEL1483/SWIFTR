@@ -26,7 +26,6 @@
 	];
 
 	// export let form: ActionData;
-	//@ts-ignore
 	// $: if (form) toastStore.trigger({ message: form?.msg, background: 'variant-filled-error' });
 </script>
 

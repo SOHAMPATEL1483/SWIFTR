@@ -1,6 +1,7 @@
 import { error, fail, json, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import prisma from '$lib/server/prisma';
+import stripe from '$lib/server/stripe';
 
 export const load: PageServerLoad = async ({ fetch, params, locals }) =>
 {
@@ -103,31 +104,55 @@ export const actions: Actions = {
         if (!session) return fail(400);
         let price: any = (await request.formData()).get("price");
         price = parseInt(price);
-        try
-        {
 
-            let myDate = new Date();
-            myDate.setDate(myDate.getDate() + 1);
-            const order = await prisma.order.create({
-                data: {
-                    UserId: session.userId,
-                    deliveryDate: myDate,
-                    subtotal: price,
-                    convinienceFee: Math.ceil(price * 0.05),
-                    total: price + Math.ceil(price * 0.05),
-                }
-            });
-            const item = await prisma.orderItem.create({
-                data: {
-                    quantity: 1,
-                    OrderId: order.id,
-                    ServiceId: params.slug,
-                }
-            });
-        } catch (error)
-        {
-            console.log(error);
-        }
+
+        let myDate = new Date();
+        myDate.setDate(myDate.getDate() + 1);
+        const order = await prisma.order.create({
+            data: {
+                UserId: session.userId,
+                deliveryDate: myDate,
+                subtotal: price,
+                convinienceFee: Math.ceil(price * 0.05),
+                total: price + Math.ceil(price * 0.05),
+            }
+        });
+        const item = await prisma.orderItem.create({
+            data: {
+                quantity: 1,
+                OrderId: order.id,
+                ServiceId: params.slug,
+            }
+        });
+
+        //creating stripe checkout session
+        let line_items = [{
+            price_data: {
+                currency: "inr",
+                unit_amount: 100,
+                product_data: {
+                    name: 'name',
+                },
+            },
+            quantity: 1,
+        }];
+        const stripe_session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            shipping_address_collection: {
+                allowed_countries: ["US", "CA", "KE", "IN"],
+            },
+            line_items,
+            mode: "payment",
+            metadata: {
+                orderid: order.id,
+            },
+            success_url: `http://localhost:5173/success`,
+            cancel_url: `http://localhost:5173/cancel`,
+        });
+
+        console.log(stripe_session.url);
+        throw redirect(302, stripe_session.url as string);
+
     }
 
 };

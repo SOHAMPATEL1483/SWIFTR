@@ -13,6 +13,7 @@ export const load: PageServerLoad = async ({ locals }) =>
         const orders = await prisma.order.findMany({
             where: {
                 UserId: session.userId,
+                status: 'COMPLETED',
             },
             include: {
                 OrderItem: {
