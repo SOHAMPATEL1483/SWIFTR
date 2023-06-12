@@ -15,7 +15,7 @@
 
 <Preloader>
 	<div class="flex gap-28 mx-auto w-fit my-20 font-poppins px-7 lg:px-0">
-		<div class="my-auto hidden lg:block lg:w-1/2">
+		<div class="my-auto hidden lg:block lg:w-1/2 max-w-lg">
 			<img src={data.service?.image} alt="" class="object-contain w-full rounded-md" />
 		</div>
 		<div class="my-auto max-w-3xl">

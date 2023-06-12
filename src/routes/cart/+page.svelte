@@ -1,21 +1,37 @@
 <script lang="ts">
 	//@ts-nocheck
 	import type { ActionData, PageData } from './$types';
-	import { enhance } from '$app/forms';
+	import { enhance, type SubmitFunction } from '$app/forms';
 	import { Toast, toastStore } from '@skeletonlabs/skeleton';
 	import type { ToastSettings } from '@skeletonlabs/skeleton';
 	import Preloader from '$lib/Preloader.svelte';
+	import Spinner from '$lib/spinner.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
 	$: if (form) toastStore.trigger({ message: form?.msg });
+
+	let loading = false;
+	const custom_enhance: SubmitFunction = () => {
+		loading = true;
+
+		return async ({ update }) => {
+			loading = false;
+			await update();
+		};
+	};
 </script>
 
 <Preloader>
 	<div class="flex mx-5 mt-5 font-poppins justify-between">
 		<p class="unstyled my-auto text-xl font-bold dark:text-slate-300">Your Cart</p>
-		<form action="?/checkout" method="post">
-			<button type="submit" class="btn variant-filled-primary">Checkout</button>
+		<form action="?/checkout" method="post" use:enhance={custom_enhance}>
+			<button disabled={loading} type="submit" class="btn variant-filled-primary">
+				{#if loading}
+					<Spinner />
+				{/if}
+				Checkout
+			</button>
 		</form>
 	</div>
 

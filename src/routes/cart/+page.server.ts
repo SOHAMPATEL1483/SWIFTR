@@ -3,6 +3,7 @@ import type { PageServerLoad } from './$types';
 import prisma from '$lib/server/prisma';
 import { element } from 'svelte/internal';
 import stripe from '$lib/server/stripe';
+import { env } from '$env/dynamic/private';
 
 export const load: PageServerLoad = async ({ locals }) =>
 {
@@ -146,8 +147,8 @@ export const actions: Actions = {
             metadata: {
                 orderid: order.id
             },
-            success_url: `http://localhost:5173/success`,
-            cancel_url: `http://localhost:5173/cancel`
+            success_url: `http://${env.STRIPE_REDIRECT_URL}/success`,
+            cancel_url: `http://${env.STRIPE_REDIRECT_URL}/cancel`,
         });
 
         throw redirect(302, stripe_session.url as string);

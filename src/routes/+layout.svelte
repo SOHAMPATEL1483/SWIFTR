@@ -11,6 +11,7 @@
 	import type { PageData } from './$types';
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import { enhance } from '$app/forms';
+	import { Modal } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
 </script>
@@ -51,4 +52,5 @@
 	</svelte:fragment>
 </AppBar>
 <Toast />
+<Modal />
 <slot />

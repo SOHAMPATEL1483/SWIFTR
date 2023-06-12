@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { enhance, type SubmitFunction } from '$app/forms';
 	import type { PageData, ActionData } from './$types';
 	import { Toast, toastStore } from '@skeletonlabs/skeleton';
 	import type { ToastSettings } from '@skeletonlabs/skeleton';
 	import Preloader from '$lib/Preloader.svelte';
+	import Spinner from '$lib/spinner.svelte';
 
 	let categories = [
 		'cleaning',
@@ -27,6 +28,16 @@
 
 	// export let form: ActionData;
 	// $: if (form) toastStore.trigger({ message: form?.msg, background: 'variant-filled-error' });
+
+	let loading = false;
+	const custom_enhance: SubmitFunction = () => {
+		loading = true;
+
+		return async ({ update }) => {
+			loading = false;
+			await update();
+		};
+	};
 </script>
 
 <Preloader>
@@ -35,7 +46,7 @@
 			<!-- heading -->
 			<p class="unstyled text-center font-poppins text-4xl font-bold">Add New Service</p>
 			<!-- form -->
-			<form action="?/AddService" method="post" use:enhance>
+			<form action="?/AddService" method="post" use:enhance={custom_enhance}>
 				<label class="name">
 					<span>Name</span>
 					<input class="input rounded-md" type="text" placeholder="name" name="name" required />
@@ -67,7 +78,12 @@
 					<input class="input rounded-md" name="image" type="file" />
 				</label>
 
-				<button type="submit" class="btn variant-filled-primary w-full">Create Service</button>
+				<button disabled={loading} type="submit" class="btn variant-filled-primary w-full">
+					{#if loading}
+						<Spinner />
+					{/if}
+					Create Service</button
+				>
 			</form>
 		</div>
 	</div>

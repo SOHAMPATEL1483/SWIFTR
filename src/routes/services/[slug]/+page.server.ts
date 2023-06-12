@@ -2,6 +2,7 @@ import { error, fail, json, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import prisma from '$lib/server/prisma';
 import stripe from '$lib/server/stripe';
+import { env } from '$env/dynamic/private';
 
 export const load: PageServerLoad = async ({ fetch, params, locals }) =>
 {
@@ -146,8 +147,8 @@ export const actions: Actions = {
             metadata: {
                 orderid: order.id,
             },
-            success_url: `http://localhost:5173/success`,
-            cancel_url: `http://localhost:5173/cancel`,
+            success_url: `http://${env.STRIPE_REDIRECT_URL}/success`,
+            cancel_url: `http://${env.STRIPE_REDIRECT_URL}/cancel`,
         });
 
         console.log(stripe_session.url);

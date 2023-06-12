@@ -114,7 +114,7 @@
 					<input class="input rounded-md" type="text" placeholder="city" name="city" required />
 					{#if form?.city}<p class="unstyled text-sm text-error-400">{form.city}</p>{/if}
 				</label>
-				<button type="submit" class="btn variant-filled-primary w-full"
+				<button disabled={loading} type="submit" class="btn variant-filled-primary w-full"
 					>{#if loading}
 						<Spinner />
 					{/if}Signup</button

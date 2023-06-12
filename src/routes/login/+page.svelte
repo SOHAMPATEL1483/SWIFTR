@@ -60,7 +60,7 @@
 						</p>
 					{/if}
 				</label>
-				<button type="submit" class="btn variant-filled-primary w-full">
+				<button disabled={loading} type="submit" class="btn variant-filled-primary w-full">
 					{#if loading}
 						<Spinner />
 					{/if}
