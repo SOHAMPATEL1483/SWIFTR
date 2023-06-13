@@ -10,10 +10,21 @@
 	import { LightSwitch } from '@skeletonlabs/skeleton';
 	import type { PageData } from './$types';
 	import { Avatar } from '@skeletonlabs/skeleton';
-	import { enhance } from '$app/forms';
+	import { enhance, type SubmitFunction } from '$app/forms';
+	import Spinner from '$lib/spinner.svelte';
 	import { Modal } from '@skeletonlabs/skeleton';
 
 	export let data: PageData;
+
+	let loading = false;
+	const custom_enhance: SubmitFunction = () => {
+		loading = true;
+
+		return async ({ update }) => {
+			loading = false;
+			await update();
+		};
+	};
 </script>
 
 <AppBar
@@ -25,10 +36,11 @@
 	<svelte:fragment slot="lead">
 		<a
 			href="/"
-			class="self-center text-xl md:text-2xl font-semibold whitespace-nowrap tracking-widest dark:text-white"
-			>SWIFTR</a
-		></svelte:fragment
-	>
+			class="self-center whitespace-nowrap text-xl font-semibold tracking-widest dark:text-white md:text-2xl"
+		>
+			SWIFTR
+		</a>
+	</svelte:fragment>
 	<svelte:fragment>
 		<div class="flex gap-7 font-medium">
 			<a href="/" class="hover:text-primary-500">Home</a>
@@ -43,8 +55,12 @@
 				<Avatar initials={data.authuser.name} background="bg-primary-500" width="w-10" />
 				<p class="my-auto">{data.authuser.name}</p>
 			</a>
-			<form method="post" action="/login?/logout" use:enhance>
-				<button type="submit" class="btn variant-filled-primary">Logout</button>
+			<form method="post" action="/login?/logout" use:enhance={custom_enhance}>
+				<button disabled={loading} type="submit" class="btn variant-filled-primary">
+					{#if loading}
+						<Spinner />
+					{/if}Logout
+				</button>
 			</form>
 		{:else}
 			<a href="/login" class="btn variant-filled-primary">Login</a>

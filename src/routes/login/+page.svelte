@@ -21,9 +21,7 @@
 </script>
 
 <Preloader>
-	<!-- <pre>
-        {JSON.stringify(form, null, 4)}
-</pre> -->
+	<!-- <pre>{JSON.stringify(form, null, 4)}</pre> -->
 	<div class="container h-full mx-auto flex justify-center items-center font-poppins">
 		<div class="card   w-5/6 lg:w-1/4 p-5">
 			<!-- heading -->
@@ -33,31 +31,29 @@
 				<label class="username my-5">
 					<span>Username</span>
 					<input
+						class:input-error={form?.error?.username}
 						class="input rounded-md"
 						type="text"
 						placeholder="Username"
 						name="username"
 						required
 					/>
-					{#if form?.username}
-						<p class="unstyled text-sm text-error-400">
-							{form.username}
-						</p>
+					{#if form?.error?.username}
+						<p class="unstyled text-sm text-error-400">{form?.error?.username[0]}</p>
 					{/if}
 				</label>
 				<label class="Password">
 					<span>Password</span>
 					<input
+						class:input-error={form?.error?.password}
 						class="input rounded-md"
 						type="password"
 						placeholder="Password"
 						name="password"
 						required
 					/>
-					{#if form?.password}
-						<p class="unstyled text-sm text-error-400">
-							{form.password}
-						</p>
+					{#if form?.error?.password}
+						<p class="unstyled text-sm text-error-400">{form?.error?.password[0]}</p>
 					{/if}
 				</label>
 				<button disabled={loading} type="submit" class="btn variant-filled-primary w-full">

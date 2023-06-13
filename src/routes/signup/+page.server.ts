@@ -57,14 +57,8 @@ export const actions: Actions = {
             }
             if (e instanceof ZodError)
             {
-                let error: Record<string, string> = {};
-                e.errors.forEach((c) =>
-                {
-                    if (c)
-                        error[c.path[0]] = c.message;
-                });
-                console.error(error);
-                return fail(400, error);
+                const { fieldErrors } = e.flatten();
+                return fail(400, { error: fieldErrors });
             }
             return fail(400, { msg: "something wrong happened" });
         }

@@ -31,88 +31,111 @@
 			<form action="?/signup" method="post" use:enhance>
 				<label class="username">
 					<span>Username</span>
-					<input class="input rounded-md" type="text" placeholder="Username" name="name" required />
-					{#if form?.name}
-						<p class="unstyled text-sm text-error-400">
-							{form.name}
-						</p>
+					<input
+						class:input-error={form?.error?.name}
+						class="input rounded-md"
+						type="text"
+						placeholder="Username"
+						name="name"
+						required
+					/>
+					{#if form?.error?.name}
+						<p class="unstyled text-sm text-error-400">{form?.error?.name[0]}</p>
 					{/if}
 				</label>
 				<label class="email">
 					<span>Email</span>
-					<input class="input rounded-md" type="email" placeholder="email" name="email" required />
-					{#if form?.email}
-						<p class="unstyled text-sm text-error-400">
-							{form.email}
-						</p>
+					<input
+						class:input-error={form?.error?.email}
+						class="input rounded-md"
+						type="email"
+						placeholder="email"
+						name="email"
+						required
+					/>
+					{#if form?.error?.email}
+						<p class="unstyled text-sm text-error-400">{form.error.email[0]}</p>
 					{/if}
 				</label>
 				<label class="Password">
 					<span>Password</span>
 					<input
+						class:input-error={form?.error?.password}
 						class="input rounded-md"
 						type="password"
 						placeholder="Password"
 						name="password"
 						required
 					/>
-					{#if form?.password}
-						<p class="unstyled text-sm text-error-400">
-							{form.password}
-						</p>
+					{#if form?.error?.password}
+						<p class="unstyled text-sm text-error-400">{form.error.password[0]}</p>
 					{/if}
 				</label>
 				<label class="Phone No.">
 					<span>Phone No.</span>
 					<input
+						class:input-error={form?.error?.phone}
 						class="input rounded-md"
 						type="number"
 						placeholder="Phone No."
 						name="phone"
 						required
 					/>
-					{#if form?.phone}
-						<p class="unstyled text-sm text-error-400">
-							{form.phone}
-						</p>
+					{#if form?.error?.phone}
+						<p class="unstyled text-sm text-error-400">{form.error.phone[0]}</p>
 					{/if}
 				</label>
 				<label class="address">
 					<span>Address</span>
 					<textarea
+						class:input-error={form?.error?.address}
 						class="textarea"
 						rows="2"
 						placeholder="Enter your full address here"
 						name="address"
 						required
 					/>
-					{#if form?.address}
-						<p class="unstyled text-sm text-error-400">
-							{form.address}
-						</p>
+					{#if form?.error?.address}
+						<p class="unstyled text-sm text-error-400">{form.error.address[0]}</p>
 					{/if}
 				</label>
 				<label for="roles" class="flex gap-5">
 					<span class="my-auto">Role:</span>
-					<select class="select" name="role">
+					<select class:input-error={form?.error?.role} class="select" name="role">
 						<option value="CUSTOMER">Customer</option>
 						<option value="PROVIDER">Provider</option>
 					</select>
-					{#if form?.role}
-						<p class="unstyled text-sm text-error-400">
-							{form.role}
-						</p>
+					{#if form?.error?.role}
+						<p class="unstyled text-sm text-error-400">{form.error.role[0]}</p>
 					{/if}
 				</label>
 				<label class="state">
 					<span>State</span>
-					<input class="input rounded-md" type="text" placeholder="state" name="state" required />
-					{#if form?.state} <p class="unstyled text-sm text-error-400">{form.state}</p> {/if}
+					<input
+						class:input-error={form?.error?.state}
+						class="input rounded-md"
+						type="text"
+						placeholder="state"
+						name="state"
+						required
+					/>
+					{#if form?.error?.state}
+						<p class="unstyled text-sm text-error-400">{form.error.state[0]}</p>
+					{/if}
 				</label>
 				<label class="city">
 					<span>City</span>
-					<input class="input rounded-md" type="text" placeholder="city" name="city" required />
-					{#if form?.city}<p class="unstyled text-sm text-error-400">{form.city}</p>{/if}
+					<input
+						class:input-error={form?.error?.City}
+						class="input rounded-md"
+						type="text"
+						placeholder="city"
+						name="city"
+						required
+					/>
+					{#if form?.error?.city}
+						<p class="unstyled text-sm text-error-400">{form.error.city[0]}</p>
+					{/if}
 				</label>
 				<button disabled={loading} type="submit" class="btn variant-filled-primary w-full"
 					>{#if loading}
