@@ -6,7 +6,7 @@ import { ZodError, z } from "zod";
 
 
 const User = z.object({
-    username: z.string().min(8, "username must be atleast 8 character long"),
+    email: z.string().email("This must be valid email"),
     password: z.string()
         .regex(new RegExp(".*[A-Z].*"), "atleast one uppercase character required")
         .regex(new RegExp(".*[a-z].*"), "atleast One lowercase character required")
@@ -26,7 +26,7 @@ export const actions: Actions = {
         try
         {
             const validated_user = User.parse(formdata);
-            const key = await auth.useKey("username", validated_user.username, validated_user.password);
+            const key = await auth.useKey("email", validated_user.email, validated_user.password);
             const session = await auth.createSession(key.userId);
             locals.auth.setSession(session);
         }

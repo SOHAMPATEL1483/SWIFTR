@@ -36,8 +36,8 @@ export const actions: Actions = {
             delete formdata.email;
             const user = await auth.createUser({
                 primaryKey: {
-                    providerId: "username",
-                    providerUserId: validated_data.name,
+                    providerId: "email",
+                    providerUserId: validated_data.email,
                     password: validated_data.password,
                 },
                 attributes: {

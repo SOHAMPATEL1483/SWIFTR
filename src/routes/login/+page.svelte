@@ -28,18 +28,18 @@
 			<p class="text-center font-bold font-poppins text-4xl unstyled">Sign in</p>
 			<!-- form -->
 			<form action="?/signin" method="post" use:enhance={custom_enhance}>
-				<label class="username my-5">
-					<span>Username</span>
+				<label class="email">
+					<span>Email</span>
 					<input
-						class:input-error={form?.error?.username}
+						class:input-error={form?.error?.email}
 						class="input rounded-md"
-						type="text"
-						placeholder="Username"
-						name="username"
+						type="email"
+						placeholder="email"
+						name="email"
 						required
 					/>
-					{#if form?.error?.username}
-						<p class="unstyled text-sm text-error-400">{form?.error?.username[0]}</p>
+					{#if form?.error?.email}
+						<p class="unstyled text-sm text-error-400">{form.error.email[0]}</p>
 					{/if}
 				</label>
 				<label class="Password">

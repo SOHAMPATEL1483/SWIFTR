@@ -28,21 +28,7 @@
 			<!-- heading -->
 			<p class="text-center font-bold font-poppins text-4xl unstyled">Sign up</p>
 			<!-- form -->
-			<form action="?/signup" method="post" use:enhance>
-				<label class="username">
-					<span>Username</span>
-					<input
-						class:input-error={form?.error?.name}
-						class="input rounded-md"
-						type="text"
-						placeholder="Username"
-						name="name"
-						required
-					/>
-					{#if form?.error?.name}
-						<p class="unstyled text-sm text-error-400">{form?.error?.name[0]}</p>
-					{/if}
-				</label>
+			<form action="?/signup" method="post" use:enhance={custom_enhance}>
 				<label class="email">
 					<span>Email</span>
 					<input
@@ -69,6 +55,20 @@
 					/>
 					{#if form?.error?.password}
 						<p class="unstyled text-sm text-error-400">{form.error.password[0]}</p>
+					{/if}
+				</label>
+				<label class="username">
+					<span>Username</span>
+					<input
+						class:input-error={form?.error?.name}
+						class="input rounded-md"
+						type="text"
+						placeholder="Username"
+						name="name"
+						required
+					/>
+					{#if form?.error?.name}
+						<p class="unstyled text-sm text-error-400">{form?.error?.name[0]}</p>
 					{/if}
 				</label>
 				<label class="Phone No.">

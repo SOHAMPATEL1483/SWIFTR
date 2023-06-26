@@ -16,7 +16,11 @@
 <Preloader>
 	<div class="flex gap-28 mx-auto w-fit my-20 font-poppins px-7 lg:px-0">
 		<div class="my-auto hidden lg:block lg:w-1/2 max-w-lg">
-			<img src={data.service?.image} alt="" class="object-contain w-full rounded-md" />
+			<img
+				src={data.service?.image}
+				alt=""
+				class="object-contain w-full max-w-[320px] rounded-md"
+			/>
 		</div>
 		<div class="my-auto max-w-3xl">
 			<p class="unstyled text-3xl font-semibold text-center mb-5">{data.service?.name}</p>
