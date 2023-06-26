@@ -26,14 +26,13 @@ const User = z.object({
 
 
 export const actions: Actions = {
-    signup: async ({ cookies, request, locals }) =>
+    signup: async ({ request, locals }) =>
     {
         let formdata: any = Object.fromEntries(await request.formData());
         try
         {
             const validated_data = User.parse(formdata);
             delete formdata.password;
-            delete formdata.email;
             const user = await auth.createUser({
                 primaryKey: {
                     providerId: "email",

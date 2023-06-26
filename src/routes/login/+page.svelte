@@ -3,8 +3,7 @@
 	import type { ActionData, PageData } from './$types';
 	import Spinner from '$lib/spinner.svelte';
 	import Preloader from '$lib/Preloader.svelte';
-	import { Toast, toastStore } from '@skeletonlabs/skeleton';
-	import type { ToastSettings } from '@skeletonlabs/skeleton';
+	import { toastStore } from '@skeletonlabs/skeleton';
 	// export let data: PageData;
 	export let form: ActionData;
 	//@ts-ignore

@@ -9,6 +9,7 @@ datasource db {
 
 model AuthUser {
     id           String        @id @unique
+    email        String?       @unique
     name         String
     role         Role
     phone        String
