@@ -123,16 +123,20 @@ export const actions: Actions = {
                 quantity: 1,
                 OrderId: order.id,
                 ServiceId: params.slug,
+            },
+            include: {
+                Service: true,
             }
+
         });
 
         //creating stripe checkout session
         let line_items = [{
             price_data: {
                 currency: "inr",
-                unit_amount: 100,
+                unit_amount: price * 100,
                 product_data: {
-                    name: 'name',
+                    name: item.Service.name,
                 },
             },
             quantity: 1,

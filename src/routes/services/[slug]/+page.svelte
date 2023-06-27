@@ -2,15 +2,25 @@
 	//@ts-nocheck
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import type { ActionData, PageData } from './$types';
-	import { enhance } from '$app/forms';
-	import { Toast, toastStore } from '@skeletonlabs/skeleton';
-	import type { ToastSettings } from '@skeletonlabs/skeleton';
+	import { enhance, type SubmitFunction } from '$app/forms';
+	import { toastStore } from '@skeletonlabs/skeleton';
 	import Preloader from '$lib/Preloader.svelte';
+	import Spinner from '$lib/spinner.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
 	//@ts-ignore
 	$: if (form) toastStore.trigger({ message: form?.msg });
+
+	let loading = false;
+	const custom_enhance: SubmitFunction = () => {
+		loading = true;
+
+		return async ({ update }) => {
+			loading = false;
+			await update();
+		};
+	};
 </script>
 
 <Preloader>
@@ -43,9 +53,14 @@
 				<p class="my-auto ml-2">{data.service?.Seller.name}</p>
 			</div>
 			<div class="flex gap-6 my-4">
-				<form action="?/PlaceOrder" method="post" use:enhance>
+				<form action="?/PlaceOrder" method="post" use:enhance={custom_enhance}>
 					<input type="hidden" name="price" value={data.service?.price} />
-					<button type="submit" class="btn btn-lg variant-filled-primary">Place Order</button>
+					<button type="submit" disabled={loading} class="btn btn-lg variant-filled-primary">
+						{#if loading}
+							<Spinner />
+						{/if}
+						Place Order</button
+					>
 				</form>
 				<form action="?/AddCartItem" method="post" use:enhance>
 					<button type="submit" class="btn btn-lg variant-soft-secondary">Add to Cart</button>
